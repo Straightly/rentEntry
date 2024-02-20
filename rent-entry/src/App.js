@@ -7,16 +7,19 @@ function App() {
   const [unit, setUnit] = useState('');
   const [amount, setAmount] = useState('');
   const [fileName, setFileName] = useState('');
+  const [sequence, setSequence] = useState(1);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newEntry = {
+      id: sequence,
       date,
       property,
       unit,
       amount: parseFloat(amount).toFixed(2),
     };
     setEntries([...entries, newEntry]);
+    setSequence(sequence + 1); // Increment sequence number
     // Clear only the unit and amount fields
     setUnit('');
     setAmount('');
@@ -40,6 +43,10 @@ function App() {
     reader.onload = (event) => {
       const data = JSON.parse(event.target.result);
       setEntries(data); // Replace existing entries with loaded entries
+      const lastEntry = data[data.length - 1];
+      if (lastEntry) {
+        setSequence(lastEntry.id + 1); // Update sequence number based on the last loaded entry
+      }
     };
     reader.readAsText(file);
   };
@@ -80,8 +87,8 @@ function App() {
       <ul>
         {entries.map((entry, index) => (
           <li key={index}>
-            <strong>Date:</strong> {entry.date}, <strong>Property:</strong> {entry.property}, <strong>Unit:</strong>{' '}
-            {entry.unit}, <strong>Amount:</strong> {entry.amount}
+            <strong>Sequence:</strong> {entry.id}, <strong>Date:</strong> {entry.date}, <strong>Property:</strong>{' '}
+            {entry.property}, <strong>Unit:</strong> {entry.unit}, <strong>Amount:</strong> {entry.amount}
           </li>
         ))}
       </ul>
