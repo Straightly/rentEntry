@@ -11,6 +11,7 @@ function App() {
   const [fileName, setFileName] = useState('');
   const [sequence, setSequence] = useState(1);
   const [selectedEntry, setSelectedEntry] = useState(null);
+  const [positionToAdd, setPositionToAdd] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,8 +38,21 @@ function App() {
       setEntries(updatedEntries);
       setSelectedEntry(null); // Clear selected entry after updating
     } else {
-      setEntries([...entries, newEntry]);
-      setSequence(sequence + 1); // Increment sequence number
+      let newEntries = [...entries];
+      if (positionToAdd !== '') {
+        const position = parseInt(positionToAdd);
+        newEntries.splice(position - 1, 0, { ...newEntry, id: position }); // Insert at the specified position
+      } else {
+        newEntry.id = sequence;
+        newEntries.push(newEntry); // Add to the bottom if no position specified
+      }
+      // Update sequence numbers
+      newEntries = newEntries.map((entry, index) => ({
+        ...entry,
+        id: index + 1,
+      }));
+      setEntries(newEntries);
+      setSequence(newEntries.length + 1); // Increment sequence number
     }
     // Clear only the unit and amount fields after submission
     setUnit('');
@@ -110,6 +124,18 @@ function App() {
         </label>
         <br />
         <button type="submit">{selectedEntry ? 'Update' : 'Submit'}</button>
+        {!selectedEntry && (
+          <label>
+            Position to Add:
+            <input
+              type="number"
+              value={positionToAdd}
+              onChange={(e) => setPositionToAdd(e.target.value)}
+              min="1"
+              step="1"
+            />
+          </label>
+        )}
       </form>
       <h2>Collected Entries:</h2>
       <ul>
