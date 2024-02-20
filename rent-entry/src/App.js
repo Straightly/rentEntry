@@ -6,6 +6,8 @@ function App() {
   const [property, setProperty] = useState('');
   const [unit, setUnit] = useState('');
   const [amount, setAmount] = useState('');
+  const [fileName, setFileName] = useState('');
+  const [loadedEntries, setLoadedEntries] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,12 +23,47 @@ function App() {
     setAmount('');
   };
 
+  const handleSave = () => {
+    const data = JSON.stringify(entries, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${fileName}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const data = JSON.parse(event.target.result);
+      setLoadedEntries(data);
+    };
+    reader.readAsText(file);
+  };
+
   // Calculate the sum of all amounts
   const totalAmount = entries.reduce((total, entry) => total + parseFloat(entry.amount), 0).toFixed(2);
 
   return (
     <div>
       <h1>Data Entry Application</h1>
+      <div>
+        <input type="file" onChange={handleFileChange} />
+      </div>
+      <h2>Loaded Entries:</h2>
+      <ul>
+        {loadedEntries &&
+          loadedEntries.map((entry, index) => (
+            <li key={index}>
+              <strong>Date:</strong> {entry.date}, <strong>Property:</strong> {entry.property}, <strong>Unit:</strong>{' '}
+              {entry.unit}, <strong>Amount:</strong> {entry.amount}
+            </li>
+          ))}
+      </ul>
       <form onSubmit={handleSubmit}>
         <label>
           Date:
@@ -60,6 +97,13 @@ function App() {
         ))}
       </ul>
       <h2>Total Amount: {totalAmount}</h2>
+      <div>
+        <label>
+          Enter File Name:
+          <input type="text" value={fileName} onChange={(e) => setFileName(e.target.value)} />
+        </label>
+        <button onClick={handleSave}>Save as JSON</button>
+      </div>
     </div>
   );
 }
