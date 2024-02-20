@@ -7,7 +7,6 @@ function App() {
   const [unit, setUnit] = useState('');
   const [amount, setAmount] = useState('');
   const [fileName, setFileName] = useState('');
-  const [loadedEntries, setLoadedEntries] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,7 +39,7 @@ function App() {
     const reader = new FileReader();
     reader.onload = (event) => {
       const data = JSON.parse(event.target.result);
-      setLoadedEntries(data);
+      setEntries(data); // Replace existing entries with loaded entries
     };
     reader.readAsText(file);
   };
@@ -54,16 +53,6 @@ function App() {
       <div>
         <input type="file" onChange={handleFileChange} />
       </div>
-      <h2>Loaded Entries:</h2>
-      <ul>
-        {loadedEntries &&
-          loadedEntries.map((entry, index) => (
-            <li key={index}>
-              <strong>Date:</strong> {entry.date}, <strong>Property:</strong> {entry.property}, <strong>Unit:</strong>{' '}
-              {entry.unit}, <strong>Amount:</strong> {entry.amount}
-            </li>
-          ))}
-      </ul>
       <form onSubmit={handleSubmit}>
         <label>
           Date:
