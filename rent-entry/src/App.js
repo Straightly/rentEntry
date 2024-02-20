@@ -114,7 +114,14 @@ function App() {
       <h2>Collected Entries:</h2>
       <ul>
         {entries.map((entry, index) => (
-          <li key={index} onClick={() => handleEntrySelect(entry)} style={{ cursor: 'pointer' }}>
+          <li
+            key={index}
+            onClick={() => handleEntrySelect(entry)}
+            style={{
+              cursor: 'pointer',
+              backgroundColor: selectedEntry && selectedEntry.id === entry.id ? '#f0f0f0' : 'transparent',
+            }}
+          >
             <strong>Sequence:</strong> {entry.id}, <strong>Date:</strong> {entry.date}, <strong>Property:</strong>{' '}
             {entry.property}, <strong>Unit:</strong> {entry.unit}, <strong>Amount:</strong> {entry.amount}
           </li>
