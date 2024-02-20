@@ -1,3 +1,5 @@
+// Version "beforeEdit"
+
 import React, { useState } from 'react';
 
 function App() {
@@ -8,6 +10,7 @@ function App() {
   const [amount, setAmount] = useState('');
   const [fileName, setFileName] = useState('');
   const [sequence, setSequence] = useState(1);
+  const [selectedEntry, setSelectedEntry] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,9 +21,26 @@ function App() {
       unit,
       amount: parseFloat(amount).toFixed(2),
     };
-    setEntries([...entries, newEntry]);
-    setSequence(sequence + 1); // Increment sequence number
-    // Clear only the unit and amount fields
+    if (selectedEntry) {
+      const updatedEntries = entries.map((entry) => {
+        if (entry.id === selectedEntry.id) {
+          return {
+            ...entry,
+            date,
+            property,
+            unit,
+            amount: parseFloat(amount).toFixed(2),
+          };
+        }
+        return entry;
+      });
+      setEntries(updatedEntries);
+      setSelectedEntry(null); // Clear selected entry after updating
+    } else {
+      setEntries([...entries, newEntry]);
+      setSequence(sequence + 1); // Increment sequence number
+    }
+    // Clear only the unit and amount fields after submission
     setUnit('');
     setAmount('');
   };
@@ -49,6 +69,14 @@ function App() {
       }
     };
     reader.readAsText(file);
+  };
+
+  const handleEntrySelect = (entry) => {
+    setSelectedEntry(entry);
+    setDate(entry.date);
+    setProperty(entry.property);
+    setUnit(entry.unit);
+    setAmount(entry.amount);
   };
 
   // Calculate the sum of all amounts
@@ -81,12 +109,12 @@ function App() {
           <input type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} required />
         </label>
         <br />
-        <button type="submit">Submit</button>
+        <button type="submit">{selectedEntry ? 'Update' : 'Submit'}</button>
       </form>
       <h2>Collected Entries:</h2>
       <ul>
         {entries.map((entry, index) => (
-          <li key={index}>
+          <li key={index} onClick={() => handleEntrySelect(entry)} style={{ cursor: 'pointer' }}>
             <strong>Sequence:</strong> {entry.id}, <strong>Date:</strong> {entry.date}, <strong>Property:</strong>{' '}
             {entry.property}, <strong>Unit:</strong> {entry.unit}, <strong>Amount:</strong> {entry.amount}
           </li>
