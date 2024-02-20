@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 
+const properties = ["2604", "ChinaTown", "Marie", "Sacajawea", "Yakima", "Ruby"];
+
 function App() {
   const [entries, setEntries] = useState([]);
   const [date, setDate] = useState('');
@@ -110,7 +112,16 @@ function App() {
         <br />
         <label>
           Property:
-          <input type="text" value={property} onChange={(e) => setProperty(e.target.value)} required />
+          <select
+            value={property}
+            onChange={(e) => setProperty(e.target.value)}
+            required
+          >
+            <option value="">Select Property</option>
+            {properties.map((prop, index) => (
+              <option key={index} value={prop}>{prop}</option>
+            ))}
+          </select>
         </label>
         <br />
         <label>
@@ -138,21 +149,35 @@ function App() {
         )}
       </form>
       <h2>Collected Entries:</h2>
-      <ul>
-        {entries.map((entry, index) => (
-          <li
-            key={index}
-            onClick={() => handleEntrySelect(entry)}
-            style={{
-              cursor: 'pointer',
-              backgroundColor: selectedEntry && selectedEntry.id === entry.id ? '#f0f0f0' : 'transparent',
-            }}
-          >
-            <strong>Sequence:</strong> {entry.id}, <strong>Date:</strong> {entry.date}, <strong>Property:</strong>{' '}
-            {entry.property}, <strong>Unit:</strong> {entry.unit}, <strong>Amount:</strong> {entry.amount}
-          </li>
-        ))}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Sequence</th>
+            <th>Date</th>
+            <th>Property</th>
+            <th>Unit</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {entries.map((entry, index) => (
+            <tr
+              key={index}
+              onClick={() => handleEntrySelect(entry)}
+              style={{
+                cursor: 'pointer',
+                backgroundColor: selectedEntry && selectedEntry.id === entry.id ? '#f0f0f0' : 'transparent',
+              }}
+            >
+              <td>{entry.id}</td>
+              <td>{entry.date}</td>
+              <td>{entry.property}</td>
+              <td>{entry.unit}</td>
+              <td style={{ textAlign: 'right' }}>{entry.amount}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <h2>Total Amount: {totalAmount}</h2>
       <div>
         <label>
