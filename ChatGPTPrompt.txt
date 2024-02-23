@@ -1,0 +1,39 @@
+Sure, here's a list of all the prompts you gave to generate the program:
+
+1. Write me an application to do data entry and collect the entries into a list. Each entry will have a date, a string for property, a string for unit, and a number with two decimal places for amount.
+2. Write a JavaScript application with React to be hosted in Node. The application will be used to do data entry and collect the entries into a list. Each entry will have a date, a string for property, a string for unit, and a number with two decimal places for amount.
+3. Do you know if I initiate an app use npx create-react-app my-app, will it run in node?
+4. What is the best IDE for Python?
+5. Can you also add a sum of all amount entered at the bottom?
+6. After submit, leave the values, except the unit and amount?
+7. Can you add a button at the very bottom to allow me to save the list as a .json file? Please add a field to the left of the button for me to enter the file name.
+8. Can you add a button on the top to allow me to select a file from my local computer to load a previously saved .json file?
+9. Can you move the button to input file to the top, above the entry fields?
+10. When you load the file, can you get rid of the loaded entry, but add all the entries to collected entry and also update the total?
+11. Got "Line 47:7: 'setTotalAmount' is not defined no-undef"
+12. Remove the loaded entries: label and the loaded entry list.
+13. You forgot to remove "Line 10:10: 'loadedEntries' is assigned a value but never used no-unused-vars"
+14. Can you add a sequence number to the entries of the list, starting at 1 and increment by 1?
+15. I would like to add more functions to the app. I am worried, however, the change might mess up the app. Can you remember this version of code as version "beforeEdit" so I can come back to it if I mess up?
+16. Can you make all entries selectable? When an entry is selected, populate the fields with the values from the entry. I will then change the values in some of the fields. After that, if I click on submit, instead of adding a new entry, the selected entry will be updated.
+17. There was a regression. When I click the submit button (or the update button if a selection was made), I want you to keep all other fields except the unit and amount. But now, they are wiped out.
+18. Can you please preserve the other fields except the unit and amount?
+19. Can you make the list to be displayed with the field names as the titles for the column? Please also align the numbers by the decimal point.
+
+
+Now here is something fun.  After you generate the code, you give me a button to copy the code.  That is great.  Can you move that button to the bottom of the code window, so I do not have to scroll up to copy the code, then scroll down again to write prompt?
+It proceeded to create some code for me to actually dump the source code :-).  I asked it to forget this last prompt and we will see if it remembered it.
+
+
+
+The prompt for changing the property field to a dropdown and fixing any issues afterward is:
+
+Can you change the property field to a dropdown list composed of strings "2604", "ChinaTown", "Marie", "Sacajawea", "Yakima", and "Ruby"? It should continue to allow me to type, which will narrow down the selection to match the letters I typed.
+
+
+User
+And the one after this?
+ChatGPT
+The prompt after changing the property field to a dropdown and fixing any subsequent issues is:
+
+It did not work. After I made a selection of the dropdown, I can no longer type anything to change the selection. After I made a selection, the dropdown should display the full list if I click the down arrow. It should also start with an empty string to filter.
