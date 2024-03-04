@@ -1,5 +1,3 @@
-// Version "beforeEdit"
-
 import React, { useState } from 'react';
 
 const properties = ["2604", "ChinaTown", "Marie", "Sacajawea", "Yakima", "Ruby"];
@@ -95,6 +93,16 @@ function App() {
     setAmount(entry.amount);
   };
 
+  const handleDelete = (id) => {
+    const updatedEntries = entries.filter(entry => entry.id !== id);
+    // Reassign IDs to make them continuous
+    const updatedEntriesWithContinuousIds = updatedEntries.map((entry, index) => ({
+      ...entry,
+      id: index + 1,
+    }));
+    setEntries(updatedEntriesWithContinuousIds);
+  };
+
   // Calculate the sum of all amounts
   const totalAmount = entries.reduce((total, entry) => total + parseFloat(entry.amount), 0).toFixed(2);
 
@@ -157,6 +165,7 @@ function App() {
             <th>Property</th>
             <th>Unit</th>
             <th>Amount</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -174,6 +183,7 @@ function App() {
               <td>{entry.property}</td>
               <td>{entry.unit}</td>
               <td style={{ textAlign: 'right' }}>{entry.amount}</td>
+              <td><button onClick={() => handleDelete(entry.id)}>Delete</button></td>
             </tr>
           ))}
         </tbody>
