@@ -48,6 +48,8 @@ function App() {
       const bValue = b[sortConfig.key];
       if (sortConfig.key === 'Sequence#') {
         return sortConfig.direction === 'asc' ? aValue - bValue : bValue - aValue;
+      } else if (sortConfig.key === 'Amount') {
+        return sortConfig.direction === 'asc' ? parseFloat(aValue) - parseFloat(bValue) : parseFloat(bValue) - parseFloat(aValue);
       }
       return aValue && bValue ? aValue.localeCompare(bValue) : 0;
     });
